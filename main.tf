@@ -13,10 +13,12 @@ module "security_group" {
 
 module "ec2" {
   source            = "./modules/ec2"
-  instance_count    = var.instance_count
+  instance_count    = local.config.instance_count
+  instance_type     = local.config.instance_type
+  enable_monitoring = local.config.enable_monitoring
+  environment       = terraform.workspace
   ami_id            = var.ami_id
-  instance_type     = var.instance_type
   key_name          = var.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
-  security_group_id = module.security.security_group_id
+  security_group_id = module.security_group.security_group_id
 }

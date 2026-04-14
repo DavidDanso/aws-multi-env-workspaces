@@ -13,7 +13,7 @@ resource "aws_key_pair" "main" {
 # Save the private key locally for SSH access
 resource "local_file" "private_key" {
   content         = tls_private_key.main.private_key_pem
-  filename        = "${path.module}/${var.key_name}.pem"
+  filename        = "${path.module}/${var.key_name}-${terraform.workspace}.pem" 
   file_permission = "0400"
 }
 
@@ -25,6 +25,7 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = [var.security_group_id]
   subnet_id              = var.subnet_id
   key_name               = aws_key_pair.main.key_name
+  monitoring             = var.enable_monitoring
 
   # Install nginx on startup
   user_data = <<-EOF

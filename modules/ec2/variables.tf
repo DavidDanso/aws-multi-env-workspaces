@@ -10,9 +10,19 @@ variable "instance_type" {
   default     = "t2.micro"
 
   validation {
-    condition     = contains(["t2.micro", "t3.micro"], var.instance_type)
-    error_message = "Valid values for instance_type are: t2.micro, t3.micro. This ensures free tier eligibility."
+    condition     = contains(["t2.micro", "t2.small"], var.instance_type)
+    error_message = "Invalid instance type."
   }
+}
+
+variable "enable_monitoring" {
+  description = "Enable detailed CloudWatch monitoring"
+  type        = bool
+}
+
+variable "environment" {
+  description = "Workspace environment name"
+  type        = string
 }
 
 variable "ami_id" {
