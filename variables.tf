@@ -4,6 +4,12 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "env" {
+  description = "The deployment environment"
+  type        = string
+  default     = "dev"
+}
+
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
   type        = string
