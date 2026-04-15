@@ -14,6 +14,7 @@ module "ec2" {
 module "security_group" {
   source = "./modules/security_group"
   vpc_id = module.vpc.vpc_id
+  ingress_rules = local.config.ingress_rules
 }
 
 module "vpc" {
