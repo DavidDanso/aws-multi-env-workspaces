@@ -4,12 +4,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "env" {
-  description = "The deployment environment"
-  type        = string
-  default     = "dev"
-}
-
 variable "availability_zones" {
   description = "Availability zones"
   type        = list(string)

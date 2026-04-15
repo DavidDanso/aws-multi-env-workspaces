@@ -1,34 +1,19 @@
 # Security group with (SSH + HTTP/HTTPS ingress, all egress)
 resource "aws_security_group" "web" {
-  name        = "web-sg"
+  name        = "${terraform.workspace}-web-sg"
   description = "Allow SSH and HTTP/HTTPS inbound, all outbound"
   vpc_id      = var.vpc_id
 
-  # Ingress rules
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  dynamic "ingress" {
+    for_each = var.ingress_rules
 
-  # SSH ingress
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTPS ingress
-  ingress {
-    description = "HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    content {
+      description = ingress.value.description
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
   # Egress rules
@@ -40,8 +25,8 @@ resource "aws_security_group" "web" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Tags
   tags = {
-    Name = "web-sg"
+    Name        = "${terraform.workspace}-web-sg"
+    Environment = terraform.workspace
   }
 }
