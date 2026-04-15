@@ -4,7 +4,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 
   tags = {
-    Name = "main-vpc"
+    Name = "main-vpc-${terraform.workspace}"
   }
 }
 
@@ -16,7 +16,7 @@ resource "aws_subnet" "public_1a" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "public-subnet-1a"
+    Name = "public-subnet-1a-${terraform.workspace}"
   }
 }
 
@@ -28,7 +28,7 @@ resource "aws_subnet" "public_1b" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "public-subnet-1b"
+    Name = "public-subnet-1b-${terraform.workspace}"
   }
 }
 
@@ -40,7 +40,7 @@ resource "aws_subnet" "private_1a" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "private-subnet-1a"
+    Name = "private-subnet-1a-${terraform.workspace}"
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_subnet" "private_1b" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "private-subnet-1b"
+    Name = "private-subnet-1b-${terraform.workspace}"
   }
 }
 
@@ -61,7 +61,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "igw-main"
+    Name = "igw-${terraform.workspace}"
   }
 }
 
@@ -75,7 +75,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "public-route-table"
+    Name = "public-rt-${terraform.workspace}"
   }
 }
 
