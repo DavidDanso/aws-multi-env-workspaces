@@ -6,7 +6,7 @@ variable "vpc_id" {
 variable "ingress_rules" {
   description = "Map of ingress rules from locals"
   type = map(object({
-    port = number
-    desc = string
+    port        = number
+    description = string
   }))
 }
