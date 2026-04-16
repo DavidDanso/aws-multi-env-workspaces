@@ -19,9 +19,9 @@ module "ec2" {
   enable_monitoring = local.config.enable_monitoring
   environment       = terraform.workspace
   ami_id            = var.ami_id
-  key_name          = var.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
   security_group_id = module.security_group.security_group_id
+  key_name          = "ec2-key-${terraform.workspace}"
 }
 
 resource "aws_eip" "nat" {
@@ -35,7 +35,7 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "main" {
   count         = local.config.enable_nat_gateway ? 1 : 0
-  allocation_id = aws_eip.nat[0].id
+  allocation_id = aws_eip.nat[count.index].id
   subnet_id     = module.vpc.public_subnet_ids[0]
 
   tags = {
@@ -43,4 +43,30 @@ resource "aws_nat_gateway" "main" {
   }
 
   depends_on = [module.vpc]
+}
+
+resource "aws_route_table" "private" {
+  count  = local.config.enable_nat_gateway ? 1 : 0
+  vpc_id = module.vpc.vpc_id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.main[count.index].id
+  }
+
+  tags = {
+    Name = "private-rt-${terraform.workspace}"
+  }
+}
+
+resource "aws_route_table_association" "private_1a" {
+  count          = local.config.enable_nat_gateway ? 1 : 0
+  subnet_id      = module.vpc.private_subnet_ids[0]
+  route_table_id = aws_route_table.private[count.index].id
+}
+
+resource "aws_route_table_association" "private_1b" {
+  count          = local.config.enable_nat_gateway ? 1 : 0
+  subnet_id      = module.vpc.private_subnet_ids[1]
+  route_table_id = aws_route_table.private[count.index].id
 }

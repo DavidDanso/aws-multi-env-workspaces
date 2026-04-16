@@ -25,9 +25,9 @@ locals {
 
       # allows SSH for debugging
       ingress_rules = {
-        "ssh"   = { port = 22,  desc = "SSH for dev" }
-        "http"  = { port = 80,  desc = "HTTP" }
-        "https" = { port = 443, desc = "HTTPS" }
+        "ssh"   = { port = 22,  description = "SSH for dev" }
+        "http"  = { port = 80,  description = "HTTP" }
+        "https" = { port = 443, description = "HTTPS" }
       }
     }
     dev = {
@@ -41,9 +41,9 @@ locals {
 
       # Dev allows SSH for debugging
       ingress_rules = {
-        "ssh"   = { port = 22,  desc = "SSH for dev" }
-        "http"  = { port = 80,  desc = "HTTP" }
-        "https" = { port = 443, desc = "HTTPS" }
+        "ssh"   = { port = 22,  description = "SSH for dev" }
+        "http"  = { port = 80,  description = "HTTP" }
+        "https" = { port = 443, description = "HTTPS" }
       }
     }
     staging = {
@@ -57,9 +57,9 @@ locals {
 
       # Staging allows SSH for debugging
       ingress_rules = {
-        "ssh"   = { port = 22,  desc = "SSH for staging" }
-        "http"  = { port = 80,  desc = "HTTP" }
-        "https" = { port = 443, desc = "HTTPS" }
+        "ssh"   = { port = 22,  description = "SSH for staging" }
+        "http"  = { port = 80,  description = "HTTP" }
+        "https" = { port = 443, description = "HTTPS" }
       }
     }
     prod = {
@@ -73,8 +73,8 @@ locals {
 
       # Production does not allow SSH
       ingress_rules = {
-        "http"  = { port = 80,  desc = "HTTP" }
-        "https" = { port = 443, desc = "HTTPS" }
+        "http"  = { port = 80,  description = "HTTP" }
+        "https" = { port = 443, description = "HTTPS" }
       }
     }
   }
